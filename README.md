@@ -1,38 +1,121 @@
-# BlockSim Simultor
+# Bitcoin Simulation Project --- BlockSim
 
-## What is BlockSim Simulator?
-**BlockSim** is an open source blockchain simulator, capturing network, consensus and incentives layers of blockchain systems. BlockSim aims to provide simulation constructs that are intuitive, hide unnecessary detail and can be easily manipulated to be applied to a large set of blockchains design and deployment questions (related to performance, reliability, security or other properties of interest). At the core of BlockSim is a Base Model, which contains a number of functional blocks (e.g., blocks, transactions and nodes) common across blockchains, that can be extended and configured as suited for the system and study of interest. BlockSim is implemented in **Python**.
+This repository contains the modified version of the **BlockSim**
+blockchain simulator used for the **CSE729 --- Blockchain and
+Distributed Ledger** course project.
 
-For more details about BlockSim, we refer to our journal paper that can be freely accessed online https://www.frontiersin.org/articles/10.3389/fbloc.2020.00028/full
+The project is based on the original BlockSim simulator developed by
+**Maher Alharbi**. The original repository is available at:
 
-## Installation and Requirements
+https://github.com/maher243/BlockSim
 
-Before you can use BlockSim  simulator, you need to have **Python version 3 or above** installed in your machine as well as have the following packages installed:
+The original simulator was used as the base implementation, and selected
+source files were modified to complete the required experiments in this
+project.
 
-- pandas 
->pip install pandas
-- numpy 
->pip install numpy
-- sklearn 
->pip install sklearn
-- xlsxwriter
->pip install xlsxwriter
+## Project Modifications
 
-## Running the simulator
+### 1. FIFO Transaction Ordering
 
-Before you run the simulator, you can access the configuration file *InputsConfig.py* to choose the model of interest (Base Model 0, Bitcoin Model 1 and Ethereum Model 2) and to set up the related parameters.
-The parameters include the number of nodes (and their fraction of hash power), the block interval time, the block propagation delays, the block and transaction sizes, the block rewards, the tranaction fees etc.
-Each model has a slightly different (or additional) parameters to capture it.
+A transaction-ordering toggle was added to support two modes:
 
-To run the simulator, one needs to trigger the main class *Main.py* either from the command line
-> python Main.py
+-   **Fee-priority ordering** --- transactions are selected based on
+    their fees, with higher-fee transactions given priority.
+-   **FIFO ordering** --- pending transactions are selected according to
+    their arrival order.
 
-or using any Python editor such as Spyder.
+The selected ordering mode is also printed in the terminal during
+execution.
 
-## Statistics and Results
+### 2. Block Reward Halving
 
-The results of the simulator is printed in an excel file at the end of the simulation. The results include the blockchain ledger, number of blocks mined, number of stale (uncles) blocks and the rewards gained by each miner etc. 
+A simplified Bitcoin-style block reward halving mechanism was
+implemented.
 
-## Contact
+The reward is reduced by half after every configured number of blocks.
+The halving interval can be changed through the simulation
+configuration.
 
-For any query about how to use or even extend the simulator, feel free to contact me **alharbi.maher@gmail.com**
+The project experiments use the following halving intervals:
+
+-   20 blocks
+-   40 blocks
+-   60 blocks
+-   80 blocks
+
+## Experiments
+
+The repository was used to perform the experiments required in the
+CSE729 assignment:
+
+-   **Task 1:** Effect of miner count on the percentage of mined blocks.
+-   **Task 2:** Effect of block interval on stale rate.
+-   **Task 3:** Comparison of FIFO and fee-priority transaction
+    ordering.
+-   **Task 4:** Effect of block reward halving on miner profit.
+
+## Requirements
+
+-   Python 3 or above
+-   pandas
+-   numpy
+-   scikit-learn
+-   XlsxWriter
+
+Install the required packages using:
+
+``` bash
+pip install pandas numpy scikit-learn XlsxWriter
+```
+
+## Running the Simulator
+
+The simulation parameters can be configured in `InputsConfig.py`.
+
+For the Bitcoin model, configure:
+
+``` python
+model = 1
+```
+
+Then run:
+
+``` bash
+python Main.py
+```
+
+The simulator generates an Excel file containing the simulation results,
+including blockchain information, mined blocks, stale blocks, and miner
+rewards/profits.
+
+## Repository Structure
+
+Important files include:
+
+-   `Main.py` --- starts the simulation.
+-   `InputsConfig.py` --- simulation configuration and parameters.
+-   `Transaction.py` --- transaction processing and ordering logic.
+-   `Incentives.py` --- block reward and incentive mechanism.
+-   `Statistics.py` --- generates simulation statistics and output
+    files.
+-   `Models/` --- blockchain model components.
+
+## Attribution
+
+This project is an academic modification of the original **BlockSim**
+simulator.
+
+**Original project:** Maher Alharbi, *BlockSim: An Extensible Simulation
+Tool for Blockchain Systems*
+
+**Original repository:** https://github.com/maher243/BlockSim
+
+The BlockSim simulator and its original implementation are credited to
+the original authors. The modifications in this repository were made
+specifically for the CSE729 course project.
+
+For more information about the original BlockSim simulator and its
+research background:
+
+https://www.frontiersin.org/articles/10.3389/fbloc.2020.00028/full
+
